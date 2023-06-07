@@ -1,28 +1,23 @@
-(STEP 1)
-#Initial Data Processing 
-mkdir outputData/qortsQcData/SAMP1_RG1/
+# Step 1: Initial Data Processing
+mkdir -p outputData/qortsQcData/SAMP1_RG1/
 
-java -Xmx1G -jar softwareRelease/QoRTs.jar QC \--stranded \--chromSizes inputData/annoFiles/chrom.sizes \inputData/bamFiles/SAMP1_RG1.bam \inputData/annoFiles/anno.gtf.gz \outputData/qortsQcData/SAMP1_RG1/
+java -Xmx1G -jar softwareRelease/QoRTs.jar QC --stranded --chromSizes inputData/annoFiles/chrom.sizes inputData/bamFiles/SAMP1_RG1.bam inputData/annoFiles/anno.gtf.gz outputData/qortsQcData/SAMP1_RG1/
 
-(Step 2)
-#Generating Counts and QC plots
+# Step 2: Generating Counts and QC plots
 res <- read.qc.results.data("outputData/qortsData/", decoder.files = "inputData/annoFiles/decoder.byUID.txt", calc.DESeq2 = TRUE, calc.edgeR = TRUE);
 
-(STEP 4)
-#Merge Technical Replicates 
-java -jar softwareRelease/QoRTs.jar \ mergeAllCounts \ outputData/qortsData/ \inputData/annoFiles/decoder.byUID.txt \outputData/countTables/
+# Step 4: Merge Technical Replicates
+java -jar softwareRelease/QoRTs.jar mergeAllCounts outputData/qortsData/ inputData/annoFiles/decoder.byUID.txt outputData/countTables/
 
-(STEP 6)
-#Perform Differential Splicing Analyses 
-java -Xmx1G -jar softwareRelease/QoRTs.jar \ makeFlatGff \ --stranded \ inputData/annoFiles/anno.gtf.gz \ outputData/forJunctionSeq.gff.gz
+# Step 6: Perform Differential Splicing Analyses
+java -Xmx1G -jar softwareRelease/QoRTs.jar makeFlatGff --stranded inputData/annoFiles/anno.gtf.gz outputData/forJunctionSeq.gff.gz
 
-#Add Novel Junctions
-java -Xmx1G -jar softwareRelease/QoRTs.jar \mergeNovelSplices \--minCount 6 \--stranded \outputData/countTables/ \outputData/sizeFactors.GEO.txt \inputData/annoFiles/anno.gtf.gz \outputData/countTables/
+# Add Novel Junctions
+java -Xmx1G -jar softwareRelease/QoRTs.jar mergeNovelSplices --minCount 6 --stranded outputData/countTables/ outputData/sizeFactors.GEO.txt inputData/annoFiles/anno.gtf.gz outputData/countTables/
 
-#Perform Analysis with JunctionSeq
-source("http://hartleys.github.io/JunctionSeq/install/JS.install.R");
-JS.install();
+# Perform Analysis with JunctionSeq
+source("http://hartleys.github.io/JunctionSeq/install/JS.install.R")
+JS.install()
 
-(STEP 7)
-#Generating Browser Tracks 
-java -Xmx1G -jar softwareRelease/QoRTs.jar \bamToWiggle \--stranded \--windowSize 100 \--negativeReverseStrand \--includeTrackDefLine \--rgbColor 0,0,0 \inputData/bamFiles/SAMP1_RG1.bam \SAMP1_RG1 \inputData/annoFiles/chrom.sizes \outputData/qortsData/SAMP1_RG1/QC.wiggle
+# Step 7: Generating Browser Tracks
+java -Xmx1G -jar softwareRelease/QoRTs.jar bamToWiggle --stranded --windowSize 100 --negativeReverseStrand --includeTrackDefLine --rgbColor 0,0,0 inputData/bamFiles/SAMP1_RG1.bam SAMP1_RG1 inputData/annoFiles/chrom.sizes outputData/qortsData/SAMP1_RG1/QC.wiggle
