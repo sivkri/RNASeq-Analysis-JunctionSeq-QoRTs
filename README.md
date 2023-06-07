@@ -9,9 +9,9 @@ Step 3 - QoRTs_Sample.sh
 Step 4 - QorTs.txt
 
 
-# Repository Name
+# RNASeq-Analysis-JunctionSeq-QoRTs
 
-**Repository Description:** This repository contains scripts for RNA-Seq data analysis using JunctionSeq and QoRTs.
+**This repository contains scripts for RNA-Seq data analysis using JunctionSeq and QoRTs**
 
 ## Table of Contents
 - [Code 1: Control_Junctionseq.R](#code-1-control_junctionseqr)
