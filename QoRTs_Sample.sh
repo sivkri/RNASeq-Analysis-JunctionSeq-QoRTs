@@ -4,8 +4,7 @@
 #SBATCH --ntasks-per-node 4
 #SBATCH --mem 4gb
 #SBATCH --time=01:00:00
-#SBATCH --mail-type=ALL 
-#SBATCH --mail-user=sivkri@amu.edu.pl
+#SBATCH --mail-type=ALL
 
 export TMPDIR="/tmp/lustre_shared/${USER}/${SLURM_JOBID}"
 export SCR=${TMPDIR}
